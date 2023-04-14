@@ -102,6 +102,8 @@ public abstract class ISOBasePackager implements ISOPackager, LogSource {
             ISOComponent c = (ISOComponent) fields.get (0);
             int first = getFirstField();
 
+            // headerLength might be defined in child class, better usage is getter
+            int headerLength = getHeaderLength();
 
             // pre-read header, if it exists, and advance total len
             if (m instanceof ISOMsg && headerLength>0)
@@ -252,6 +254,8 @@ public abstract class ISOBasePackager implements ISOPackager, LogSource {
             if (evt != null)  // save a few CPU cycle if no logger available
                 evt.addMessage (ISOUtil.hexString (b));
 
+            // headerLength might be defined in child class, better usage is getter
+            int headerLength = getHeaderLength();
 
             // if ISOMsg and headerLength defined
             if (m instanceof ISOMsg /*&& ((ISOMsg) m).getHeader()==null*/ && headerLength>0)
@@ -372,6 +376,9 @@ public abstract class ISOBasePackager implements ISOPackager, LogSource {
         try {
             if (m.getComposite() != m)
                 throw new ISOException ("Can't call packager on non Composite");
+
+            // headerLength might be defined in child class, better usage is getter
+            int headerLength = getHeaderLength();
 
             // if ISOMsg and headerLength defined
             if (m instanceof ISOMsg && ((ISOMsg) m).getHeader()==null && headerLength>0)
@@ -525,11 +532,11 @@ public abstract class ISOBasePackager implements ISOPackager, LogSource {
     }
     public int getHeaderLength ()
     {
-    	return headerLength;
+        return headerLength;
     }
     public void setHeaderLength(int len)
     {
-    	headerLength = len;
+        headerLength = len;
     }
     public String getDescription () {
         return getClass().getName();
